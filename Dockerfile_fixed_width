@@ -1,0 +1,20 @@
+# Use the official Python image
+FROM python:3.11-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the spec file and Python script to the container
+COPY spec.json generate_and_parse.py /app/
+
+# create fixed width folder
+RUN mkdir -p /app/fixed_width
+
+# Ensure the fixed_width folder is available to save output
+VOLUME /app/fixed_width
+
+# Install any dependencies (if necessary)
+# No additional dependencies are needed for this script
+
+# Run the script
+CMD ["python3", "generate_and_parse.py"]

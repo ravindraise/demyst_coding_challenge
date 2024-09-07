@@ -1,0 +1,32 @@
+# Use the official Bitnami Spark image
+FROM bitnami/spark:latest
+
+# Install Python3 and pip (already comes with the base image)
+USER root
+
+# Set environment variables for Java and Spark
+ENV JAVA_HOME="/opt/bitnami/java"
+ENV SPARK_HOME="/opt/bitnami/spark"
+ENV PATH="$JAVA_HOME/bin:$SPARK_HOME/bin:$PATH"
+
+# Install Python dependencies via pip
+RUN pip3 install pyspark faker
+
+# Create a directory for the PySpark scripts
+RUN mkdir -p /opt/spark_scripts
+
+# Copy PySpark scripts to the container
+COPY data_proc_generate_csv.py /opt/spark_scripts/data_proc_generate_csv.py
+COPY data_proc_anonymize_data.py /opt/spark_scripts/data_proc_anonymize_data.py
+
+# Create the /data directory for input/output files inside the working directory
+RUN mkdir -p /opt/spark_scripts/data
+
+# Set the working directory
+WORKDIR /opt/spark_scripts
+
+# Declare the /data directory as a volume
+VOLUME /opt/spark_scripts/data
+
+# Default spark submit
+CMD ["spark-submit", "/opt/spark_scripts/data_proc_generate_csv.py"]
