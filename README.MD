@@ -16,7 +16,10 @@
 - The Python script(generate_and_parse.py) generates a fixed-width file based on the spec.json file, parses it, and outputs a CSV file.
 - By default, it generates 1000 rows file, if you need more rows, add "NoOfRows":xxx to spec.json, it generates no of rows mentioned as per spec.json
 #### Run the solution using docker image
-- Please create a docker image from the Dockerfile inside the project folder demyst_coding_challenge/Dockerfile_fixed_width 
+- Please create a docker image from the Dockerfile inside the project folder 
+```text
+ demyst_coding_challenge/Dockerfile_fixed_width 
+```
 ```shell
  cd demyst_coding_challenge 
  docker build -t fixed-width-parser . -f Dockerfile_fixed_width
@@ -76,10 +79,13 @@ num_rows = target_size // approx_row_size
   - data/anonymize_output/random  - Has anonymized data for random string.
 
 #### Run the solution using docker  locally 
-- Please create a docker image from the Dockerfile inside the project folder demyst_coding_challenge/Dockerfile_data_process
-- Dockerfile uses spark image to run the spark job with docker container.
+- Please create a docker image from the Dockerfile inside the project folder 
+```text
+demyst_coding_challenge/Dockerfile_data_process
+```
 ```shell
- cd demyst_coding_challenge 
+ cd demyst_coding_challenge
+ # Dockerfile uses spark image to run the spark job with docker container. 
  docker build -t data-anonymise-csv . -f Dockerfile_data_process
 ```
 - check if docker image has been saved in local repo
