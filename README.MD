@@ -45,7 +45,7 @@ CSV file 'fixed_width/parsed_data.csv' generated successfully.
   - fixed_width/fixed_width_data.txt- This file contains fixed with data
   - fixed_width/parsed_data.csv - This file parsed fixed with file saved in CSV file format
 - Python script handles encoding on the provided spec.json
-- Docker container will save the output files inside fixed_width folder(can be run from any dir)
+- Docker container will save the output files inside fixed_width folder inside current working dir
 
 ## Problem 2
 
@@ -60,7 +60,7 @@ CSV file 'fixed_width/parsed_data.csv' generated successfully.
 - Hint - You would need some distributed computing platform
 
 ### Solution to problem 2:
-- Pyspark job data_proc_generate_csv.py user python faker library, generates 2gb csv file 
+- Pyspark job data_proc_generate_csv.py uses python faker library, generates 2gb csv file 
 and saves inside data/2gb_csv_file folder in the current working dir.
 - Logic to generate 2gb csv data is there in the python script file
 ```python
@@ -129,14 +129,6 @@ docker push <your-registry>/data-anonymise-csv:latest
 ```
 - Submit spark jobs
 ```shell
-spark-submit \
---master <cluster-manager-url> \
---deploy-mode <deploy-mode> \
---conf spark.dynamicAllocation.enabled=true \
---conf spark.dynamicAllocation.minExecutors=<min executors> \
---conf spark.dynamicAllocation.maxExecutors=<max executors> \
-/opt/spark_scripts/data_proc_generate_csv.py or data_proc_anonymize_data.py
-
 # generate 2gb csv file
 spark-submit --master <spark-master-url> \
     --conf spark.kubernetes.container.image=<your-registry>/data-anonymise-csv:latest \
@@ -145,5 +137,13 @@ spark-submit --master <spark-master-url> \
 spark-submit --master <spark-master-url> \
     --conf spark.kubernetes.container.image=<your-registry>/data-anonymise-csv:latest \
     /opt/spark_scripts/data_proc_anonymize_data.py
-    
+# you can also pass other spark conf in spark submit
+spark-submit \
+--master <cluster-manager-url> \
+--deploy-mode <deploy-mode> \
+--conf spark.kubernetes.container.image=<your-registry>/data-anonymise-csv:latest \
+--conf spark.dynamicAllocation.enabled=true \
+--conf spark.dynamicAllocation.minExecutors=<min executors> \
+--conf spark.dynamicAllocation.maxExecutors=<max executors> \
+/opt/spark_scripts/data_proc_generate_csv.py or data_proc_anonymize_data.py
 ```
